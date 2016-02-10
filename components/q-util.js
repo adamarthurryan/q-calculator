@@ -2,6 +2,48 @@
 
 let compliment = bits => bits.map(b=>1-b)
 
+function fromIntBits(int, fractLength=31, wholeLength=0) {
+  let length = fractLength+wholeLength+1
+  let bits = Array(length).fill(0)
+
+  for (let i=length-1; i>=0; i--) {
+    bits[i]=int%2
+    int -= bits[i]
+    int /= 2
+  }
+
+  if (int > 0)
+    throw new Error(`overflow bits: ${int} did not fit in ${length} bits`)
+
+  return bits
+}
+
+function fromHexString(str, fractLength=31, wholeLength=0) {
+  let length = fractLength+wholeLength+1
+  let bits = Array(length).fill(0)
+
+  let matchRes = str.match(/0x([0-9a-fA-F]+)/)
+
+  if (matchRes == null || matchRes.length!=2)
+    throw new Error(`invalid hex string: ${str}`)
+
+  //
+
+/* ...
+  for (let i=length-1; i>=0; i--) {
+    bits[i]=int%2
+    int -= bits[i]
+    int /= 2
+  }
+
+  if (int > 0)
+    throw new Error(`overflow bits: ${int} did not fit in ${length} bits`)
+*/
+  return bits
+}
+
+
+
 function fromFloat(float, fractLength=31, wholeLength=0) {
 
   let isNeg = float < 0
@@ -18,7 +60,7 @@ function fromFloat(float, fractLength=31, wholeLength=0) {
   }
 
   if (wholePartRem>0)
-    throw new Error(`overflow whole bits: ${wholePartRem} did not fit in ${wholeLength} bits`)
+    throw new Error(`overflow whole bits: ${float} did not fit in ${wholeLength} bits`)
 
   let fractBits = []
   let fractPartRem = fractPart
@@ -97,4 +139,4 @@ function toHexString(q) {
   return "0x"+string
 }
 
-module.exports = {fromFloat, toFloat, toBinaryString, toHexString};
+module.exports = {fromFloat, fromHexString,toFloat, toBinaryString, toHexString};

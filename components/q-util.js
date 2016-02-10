@@ -1,6 +1,8 @@
 /** methods for displaying and manipulating q-numbers */
 
-function fromFloat(float, length=32, wholeLength=0) {
+let compliment = bits => bits.map(b=>1-b)
+
+function fromFloat(float, fractLength=31, wholeLength=0) {
 
   let isNeg = float < 0
 
@@ -11,7 +13,7 @@ function fromFloat(float, length=32, wholeLength=0) {
   let wholePartRem = wholePart
   for (let i=0;i<wholeLength;i++) {
     let bit = wholePartRem % 2
-    wholeBits.push(bit)
+    wholeBits.unshift(bit)
     wholePartRem = (wholePartRem-bit) /2
   }
 
@@ -20,7 +22,7 @@ function fromFloat(float, length=32, wholeLength=0) {
 
   let fractBits = []
   let fractPartRem = fractPart
-  for (let i=0;i<length-1-wholeLength;i++) {
+  for (let i=0;i<fractLength;i++) {
     let bit = (fractPartRem >= 0.5) ? 1 : 0
     if (bit==1) 
       fractPartRem -= 0.5
@@ -29,8 +31,8 @@ function fromFloat(float, length=32, wholeLength=0) {
   }
 
   if (isNeg) {
-    wholeBits = wholeBits.map(b => 1-b)
-    fractBits = fractBits.map(b => 1-b)
+    wholeBits = compliment(wholeBits)
+    fractBits = compliment(fractBits)
   }
   
   let negBits = [(isNeg) ? 1:0]
@@ -38,9 +40,31 @@ function fromFloat(float, length=32, wholeLength=0) {
   return negBits.concat(wholeBits,fractBits)
 }
 
-function toFloat(q, length=32, wholeLength=0) {
+function toFloat(q, fractLength=31, wholeLength=0) {
+  let isNeg = q[0]==1;
+  let wholeBits = q.slice(1, wholeLength+1)
+  let fractBits = q.slice(1+wholeLength, fractLength+wholeLength+1)
 
+  if (isNeg) {
+    wholeBits = compliment(wholeBits)
+    fractBits = compliment(fractBits)
+  }
+
+  let wholePart = 0
+  for (let i=0;i<wholeBits.length;i++) {
+    wholePart *= 2
+    wholePart += wholeBits[i]
+  }
+
+  let fractPart = 0
+  for (let i=fractBits.length-1;i>=0;i--) {
+    fractPart /= 2
+    fractPart += fractBits[i]/2;
+  }
+
+  return (isNeg ? -1 : 1) * (wholePart+fractPart)
 }
+
 
 function toBinaryString(q) {
   return q.join("")

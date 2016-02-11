@@ -36,9 +36,13 @@ class Main extends React.Component {
   calculateQ(input) {
     if (input.mode == 'float') {
       let floatValue = parseFloat(input.input)
+      if (floatValue==NaN)
+        throw new Error(`invalid number: ${input.input}`)
       return QUtil.fromFloat(floatValue, input.fractBits, input.wholeBits)
     }
     else if (input.mode == 'hex') {
+      if (input.input.length < 1)
+        throw new Error(`no input`)
       return QUtil.fromHexString(input.input, input.fractBits, input.wholeBits)
     }
   }

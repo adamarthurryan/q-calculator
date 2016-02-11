@@ -1,6 +1,6 @@
 # q-calculator
 
-This is a simple, web-based calculator for converting to and from q-format fixed point numbers. Fixed point arithmetic is often used in embedded enviroments for efficient signal processing, when the target microcontroller does not have a floating-point unit (FPU). 
+A simple, web-based calculator for converting to and from q-format fixed point numbers. Fixed point arithmetic is often used in embedded enviroments for efficient signal processing, when the target microcontroller does not have a floating-point unit (FPU). 
 
 [Fixed-point arithmetic on Wikipedia](https://en.wikipedia.org/wiki/Fixed-point_arithmetic)
 

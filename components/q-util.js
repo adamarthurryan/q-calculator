@@ -20,25 +20,38 @@ function fromIntBits(int, fractLength=31, wholeLength=0) {
 
 function fromHexString(str, fractLength=31, wholeLength=0) {
   let length = fractLength+wholeLength+1
-  let bits = Array(length).fill(0)
-
+  
   let matchRes = str.match(/0x([0-9a-fA-F]+)/)
 
   if (matchRes == null || matchRes.length!=2)
     throw new Error(`invalid hex string: ${str}`)
 
-  //
+  //make a bits string from the hex string
+  let hexDigits = Array.from(matchRes[1]).map(char => parseInt(char, 16))
+  let bits = []
 
-/* ...
-  for (let i=length-1; i>=0; i--) {
-    bits[i]=int%2
-    int -= bits[i]
-    int /= 2
-  }
+  hexDigits.forEach(digit => {
+    let digitBits = []
+    for (let i=0;i<4;i++) {
+      digitBits.unshift(digit%2)
+      digit -= digit%2
+      digit /= 2
+    }
+    bits.splice(bits.length, 0, ...digitBits)
+  })
 
-  if (int > 0)
-    throw new Error(`overflow bits: ${int} did not fit in ${length} bits`)
-*/
+
+  //trim the leading zeros from the bits string
+  bits = bits.slice(bits.indexOf(1))
+
+
+  //pad the bits string to the appropriate length
+  //or fail on overflow
+  if (bits.length>length)
+    throw new Error(`overflow bits: ${str} did not fit in ${length} bits`)
+  if (bits.length<length)
+    bits = Array(length-bits.length).fill(0).concat(bits)
+
   return bits
 }
 

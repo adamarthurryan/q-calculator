@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --colors",
-    "start": "webpack --progress --colors --watch",
+    "copy-css": "copyfiles -f ./node_modules/skeletonframework/dist/skeleton.css ./dist",
+    "build": "npm run copy-css && webpack --colors",
+    "start": "npm run copy-css && webpack --progress --colors --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -20,6 +21,7 @@
     "babel-loader": "^6.2.0",
     "babel-preset-es2015": "^6.3.13",
     "babel-preset-react": "^6.3.13",
+    "copyfiles": "^0.2.1",
     "webpack": "^1.12.9"
   }
 }

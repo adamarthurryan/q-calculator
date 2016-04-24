@@ -152,4 +152,4 @@ function toHexString(q) {
   return "0x"+string
 }
 
-module.exports = {fromFloat, fromHexString,toFloat, toBinaryString, toHexString};
+export {fromFloat, fromHexString, toFloat, toBinaryString, toHexString}

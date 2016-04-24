@@ -1,6 +1,6 @@
 
-var React = require('react');
-var QUtil = require('./q-util');
+import React from 'react'
+import * as QUtil from '../q-util'
 
 class QDisplay extends React.Component {
   render () {
@@ -18,4 +18,4 @@ QDisplay.propTypes = {
   format: React.PropTypes.oneOf(['binary', 'hex'])  
 }
 
-module.exports = QDisplay;
+export default QDisplay

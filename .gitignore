@@ -1,6 +1,9 @@
 *~
 node_modules
-browser-bundle.js
+
+# have to add the bundle to version control so deployment with git subtree works
+# browser-bundle.js
+
 browser-bundle.js.map
 skeleton.css
 .vscode
